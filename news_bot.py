@@ -125,6 +125,8 @@ def send_telegram_message(text: str) -> None:
             "disable_web_page_preview": True,
         }
         resp = requests.post(url, json=payload, timeout=30)
+        if not resp.ok:
+            print(f"[ERROR] Telegram response: {resp.status_code} — {resp.text}")
         resp.raise_for_status()
 
 
