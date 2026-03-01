@@ -111,7 +111,7 @@ def send_telegram_message(text: str) -> None:
 
     # Заголовок дайджеста
     date_str = datetime.now().strftime("%d.%m.%Y")
-    header = f"📰 *Технодайджест {date_str}*\n\n"
+    header = f"📰 Технодайджест {date_str}\n\n"
 
     full_text = header + text
 
@@ -122,15 +122,10 @@ def send_telegram_message(text: str) -> None:
         payload = {
             "chat_id": TELEGRAM_CHAT_ID,
             "text": chunk,
-            "parse_mode": "Markdown",
             "disable_web_page_preview": True,
         }
         resp = requests.post(url, json=payload, timeout=30)
-        if not resp.ok:
-            # Если Markdown вызывает ошибку — отправляем без форматирования
-            payload["parse_mode"] = ""
-            resp = requests.post(url, json=payload, timeout=30)
-            resp.raise_for_status()
+        resp.raise_for_status()
 
 
 def main():
